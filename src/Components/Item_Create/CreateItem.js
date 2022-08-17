@@ -18,7 +18,7 @@ const CreateItem = () => {
         }
         // console.log(items);
 
-        const url = `http://localhost:5000/items`;
+        const url = `http://localhost:5000/item`;
         fetch(url,{
             method: 'POST',
             headers:{
