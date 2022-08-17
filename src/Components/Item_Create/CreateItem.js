@@ -3,6 +3,35 @@ import React from 'react'
 const CreateItem = () => {
     const handleCreate = event => {
         event.preventDefault();
+        const itemType = event.target.itemType.value;
+        const itemName = event.target.itemName.value;
+        const subCat = event.target.subCat.value;
+        const unit = event.target.unit.value;
+        const stock = event.target.stock.value;
+
+        const items = {
+            itemType : itemType,
+            itemName : itemName,
+            subCategory : subCat,
+            unit : unit,
+            stockLimit : stock
+        }
+        // console.log(items);
+
+        const url = `http://localhost:5000/items`;
+        fetch(url,{
+            method: 'POST',
+            headers:{
+                'content-type':'application/json'
+            },
+            body:JSON.stringify(items)
+        })
+        .then(res=>res.json())
+        .then(data=>{
+            console.log(data);
+        })
+
+        event.target.reset();
     }
     return (
         <div className="flex justify-center">
@@ -55,10 +84,10 @@ const CreateItem = () => {
                         <label className="block text-grey-darker text-lg font-bold mb-2" htmlFor="stock">
                             Stock Limit :
                         </label>
-                        <input type="number" name="stock" className='shadow border rounded w-3/4 py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"' placeholder='Stock Limit' />
+                        <input type="number" name="stock" min={0}className='shadow border rounded w-3/4 py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"' placeholder='Stock Limit' />
                     </div>
 
-                    <input className='my-4 bg-purple-400 w-1/2 rounded text-yellow-50 py-2 px-3' type="submit" value="ADD" />
+                    <input className='my-4 cursor-pointer bg-purple-400 w-1/2 rounded text-yellow-50 py-2 px-3' type="submit" value="ADD" />
                 </form>
 
             </div>
