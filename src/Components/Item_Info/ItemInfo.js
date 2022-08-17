@@ -9,10 +9,10 @@ const ItemInfo = () => {
 
     }
     return (
-        <div>
+        <div className='mt-20'>
             <h1 className="text-3xl font-bold underline">Item Information</h1>
 
-            <form onSubmit={handleSave} className='mt-9'>
+            <form onSubmit={handleSave} className='mt-9 mx-12'>
                 <div className='flex justify-evenly'>
                     <select className='bg-gray-300 font-bold' name="item">
                         <option value="itemType" selected disabled>Item Type</option>
