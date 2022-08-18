@@ -2,9 +2,8 @@ import React from 'react';
 import useItems from '../../Hooks/useItems';
 
 const Items = () => {
-    const [items, setItems] = useItems();
+    const [items] = useItems();
 
-    
     return (
 
         <div className="container mx-auto my-10">
