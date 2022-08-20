@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import useItems from '../../Hooks/useItems';
 import SubCatModal from './SubCatModal';
@@ -7,11 +7,38 @@ import UnitModal from './UnitModal';
 const ItemInfo = () => {
   const navigate = useNavigate();
   const [items] = useItems();
-  // const [sub, setSubCat] = useState('');
-
 
   const [subModal, setSubModal] = useState(false);
   const [unitModal, setUnitModal] = useState(false);
+
+  const [subCat, setSubCat] = useState('');
+  const [subCategory, setSubCategory] = useState([]);
+
+  const [unit, setUnit] = useState('');
+  const [unitName, setUnitName] = useState([]);
+
+  const [sub, setSub] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/subcategory")
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        setSub(data)
+      })
+  }, [setSub])
+  
+  const [units, setUnits] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/unit")
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        setUnits(data)
+      })
+  }, [setUnits])
+
 
   const handleSave = event => {
     event.preventDefault();
@@ -41,26 +68,35 @@ const ItemInfo = () => {
               <select className='bg-gray-300 py-1 font-bold' name="subCat">
                 <option value="itemType" selected disabled>SubCategory</option>
                 {
-                    items.map((item, index) =>
-                        <option key={index + 1} value={index + 1} >{item.subCategory}</option>
-                        
-                    )
-                }
-                {/* <option>{sub}</option> */}
+                  sub.map((s, index) =>
+                    <option key={s._id} value={s} >{s.subCategory}</option>
 
-            </select>
+                  )
+                }
+                {
+                  subCategory.map((sub, index) =>
+                    <option key={index + 1} value={sub} >{sub}</option>
+                  )
+                }
+
+              </select>
               <button className='text-white bg-slate-400 px-3 py-1 font-bold' onClick={() => setSubModal(true)}>ADD</button>
 
 
               <select className='bg-gray-300 py-1 font-bold' name="unit">
                 <option value="itemType" selected disabled>Unit Name</option>
                 {
-                    items.map((item, index) =>
-                        <option key={index + 1} value={index + 1} >{item.unit}</option>
-                        
-                    )
+                  units.map(u =>
+                    <option key={u._id} value={u} >{u.unit}</option>
+
+                  )
                 }
-            </select>
+                {
+                  unitName.map((unit, index) =>
+                    <option key={index + 1} value={unit}>{unit}</option>
+                  )
+                }
+              </select>
               <button className='text-white bg-slate-400 px-3 py-1 font-bold' onClick={() => setUnitModal(true)}>ADD</button>
 
               <input type="text" className='border-2' name="itemName" value={item.stockLimit} placeholder='Stock Limit' />
@@ -79,12 +115,24 @@ const ItemInfo = () => {
       {/* MODAL */}
       {
         subModal ?
-         <SubCatModal setSubModal={setSubModal}></SubCatModal>
+          <SubCatModal
+            setSubModal={setSubModal}
+            subCat={subCat}
+            setSubCat={setSubCat}
+            setSubCategory={setSubCategory}
+            subCategory={subCategory}
+          ></SubCatModal>
           : null
       }
       {
         unitModal ?
-         <UnitModal setUnitModal={setUnitModal}></UnitModal>
+          <UnitModal
+            setUnitModal={setUnitModal}
+            unit={unit}
+            setUnit={setUnit}
+            unitName={unitName}
+            setUnitName={setUnitName}
+          ></UnitModal>
           : null
       }
 
