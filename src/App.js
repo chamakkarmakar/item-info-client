@@ -3,6 +3,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import Items from './Components/Item_Info/Items';
 import CreateItem from './Components/Item_Create/CreateItem';
 import ItemInfo from './Components/Item_Info/ItemInfo';
+import Demo from './Components/Item_Create/Demo';
 
 function App() {
   return (
@@ -28,6 +29,9 @@ function App() {
           <Link to="/item-form" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">
             Create Item
           </Link>
+          <Link to="/demo" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">
+            Demo
+          </Link>
 
         </nav>
       </div>
@@ -38,6 +42,7 @@ function App() {
           <Route path="/item-info" element={<ItemInfo></ItemInfo>} />
           <Route path="/item-form" element={<CreateItem></CreateItem>} />
           <Route path="/item-list" element={<Items></Items>} />
+          <Route path="/demo" element={<Demo></Demo>} />
         </Routes>
       </div>
 
