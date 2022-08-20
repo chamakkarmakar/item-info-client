@@ -6,7 +6,7 @@ import UnitModal from './UnitModal';
 
 const ItemInfo = () => {
   const navigate = useNavigate();
-  const [items] = useItems();
+  const [items,setItems] = useItems();
 
   const [subModal, setSubModal] = useState(false);
   const [unitModal, setUnitModal] = useState(false);
@@ -39,6 +39,21 @@ const ItemInfo = () => {
       })
   }, [setUnits])
 
+  const handleDelete = id =>{
+    const proceed = window.confirm('Are you sure to delete?');
+        if (proceed) {
+            const url = `http://localhost:5000/item/${id}`;
+            fetch(url, {
+                method: 'DELETE'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    const remaining = items.filter(item => item._id !== id);
+                    setItems(remaining);
+                })
+        }
+  }
 
   const handleSave = event => {
     event.preventDefault();
@@ -68,7 +83,7 @@ const ItemInfo = () => {
               <select className='bg-gray-300 py-1 font-bold' name="subCat">
                 <option value="itemType" selected disabled>SubCategory</option>
                 {
-                  sub.map((s, index) =>
+                  sub.map(s =>
                     <option key={s._id} value={s} >{s.subCategory}</option>
 
                   )
@@ -102,14 +117,18 @@ const ItemInfo = () => {
               <input type="text" className='border-2' name="itemName" value={item.stockLimit} placeholder='Stock Limit' />
 
               <button className='text-white bg-slate-400 px-1 py-1 font-bold' onClick={() => setSubModal(true)}>ADD</button>
-              <button className='bg-red-400 px-1 py-1 text-white  font-bold' onClick={() => setSubModal(true)}>DELETE</button>
+
+              <button className='bg-red-400 px-1 py-1 text-white  font-bold' onClick={() => handleDelete(item._id)}>DELETE</button>
             </div>
           )
         }
 
         <div className="flex justify-around items-center my-10">
+
           <input className='bg-red-400 text-center cursor-pointer py-1 px-9' type="reset" onClick={() => handleCancel()} value="Cancel" />
+
           <input className='bg-green-400 text-center cursor-pointer py-1 px-12' type="submit" value="Save" />
+
         </div>
       </form>
       {/* MODAL */}
