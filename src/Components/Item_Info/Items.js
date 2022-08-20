@@ -7,7 +7,7 @@ const Items = () => {
     return (
 
         <div className="container mx-auto my-10">
-            <h2 className='my-12 font-semibold text-lg'> Items Lists : {items.length}</h2>
+            <h2 className='my-12 font-semibold text-center text-lg'> Items Lists </h2>
             <table className="w-3/4 mx-auto text-sm text-left text-gray-500 ">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-200">
                     <tr>
