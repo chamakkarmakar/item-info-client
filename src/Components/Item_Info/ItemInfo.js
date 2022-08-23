@@ -1,135 +1,321 @@
-import React, { useEffect, useState } from 'react'
+import { PlusCircleIcon } from '@heroicons/react/outline';
+import { XCircleIcon } from '@heroicons/react/outline';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useItems from '../../Hooks/useItems';
-import SubCatModal from './SubCatModal';
-import UnitModal from './UnitModal';
+import SubCatModal from '../Item_Info/SubCatModal';
+import UnitModal from '../Item_Info/UnitModal';
 
 const ItemInfo = () => {
   const navigate = useNavigate();
-  const [items,setItems] = useItems();
 
   const [subModal, setSubModal] = useState(false);
   const [unitModal, setUnitModal] = useState(false);
 
   const [subCat, setSubCat] = useState('');
   const [subCategory, setSubCategory] = useState([]);
+  const [sub, setSub] = useState([]);
 
   const [unit, setUnit] = useState('');
   const [unitName, setUnitName] = useState([]);
+  const [units, setUnits] = useState([]);
 
-  const [sub, setSub] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/subcategory")
+    fetch("https://aqueous-basin-84519.herokuapp.com/subcategory")
       .then(res => res.json())
       .then(data => {
-        console.log(data);
         setSub(data)
       })
   }, [setSub])
-  
-  const [units, setUnits] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/unit")
+    fetch("https://aqueous-basin-84519.herokuapp.com/unit")
       .then(res => res.json())
       .then(data => {
-        console.log(data);
         setUnits(data)
       })
   }, [setUnits])
 
-  const handleDelete = id =>{
-    const proceed = window.confirm('Are you sure to delete?');
-        if (proceed) {
-            const url = `http://localhost:5000/item/${id}`;
-            fetch(url, {
-                method: 'DELETE'
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    const remaining = items.filter(item => item._id !== id);
-                    setItems(remaining);
-                })
-        }
-  }
 
   const handleSave = event => {
     event.preventDefault();
+    const item1 = event.target.item1.value;
+    const itemName1 = event.target.itemName1.value;
+    const subCat1 = event.target.subCat1.value;
+    const unit1 = event.target.unit1.value;
+    const stock1 = event.target.stock1.value;
+
+    const item2 = event.target.item2.value;
+    const itemName2 = event.target.itemName2.value;
+    const subCat2 = event.target.subCat2.value;
+    const unit2 = event.target.unit2.value;
+    const stock2 = event.target.stock2.value;
+
+    const item3 = event.target.item3.value;
+    const itemName3 = event.target.itemName3.value;
+    const subCat3 = event.target.subCat3.value;
+    const unit3 = event.target.unit3.value;
+    const stock3 = event.target.stock3.value;
+
+    const up1 = {
+      itemType: item1,
+      itemName: itemName1,
+      subCategory: subCat1,
+      unit: unit1,
+      stockLimit: stock1
+    }
+
+    const up2 = {
+      itemType: item2,
+      itemName: itemName2,
+      subCategory: subCat2,
+      unit: unit2,
+      stockLimit: stock2
+    }
+
+    const up3 = {
+      itemType: item3,
+      itemName: itemName3,
+      subCategory: subCat3,
+      unit: unit3,
+      stockLimit: stock3
+    }
+
+    const insertedvalue = [up1,up2,up3]
+
+    console.log(insertedvalue)
+
+    const url = `https://aqueous-basin-84519.herokuapp.com/item`;
+        fetch(url,{
+            method: 'POST',
+            headers:{
+                'content-type':'application/json'
+            },
+            body:JSON.stringify(insertedvalue)
+        })
+        .then(res=>res.json())
+        .then(data=>{
+            console.log(data);
+        })
+        event.target.reset();
 
   }
+
   const handleCancel = () => {
     navigate(`/item-list`);
   }
+
   return (
-    <div className='container mx-auto my-10'>
-      <h1 className="text-3xl font-bold text-center underline mb-5">Item Information</h1>
-
+    <div>
       <form onSubmit={handleSave} className='w-full'>
-        {
-          items.map(item =>
-            <div className='grid grid-cols-9 gap-x-4 mb-4'>
-              <select className='bg-gray-300 font-bold' name="item">
-                <option value="itemType" selected disabled>Item Type</option>
-                <option value="item1">item-1</option>
-                <option value="item2">item-2</option>
-                <option value="item3">item-3</option>
-                <option value="item4">item-4</option>
-              </select>
+        <div className='grid grid-cols-6 gap-x-4 mb-4'>
+          <select className='bg-gray-300 font-bold' name="item1" required>
+            <option value="itemType" selected disabled>Item Type</option>
+            <option value="cotton">Cotton</option>
+            <option value="velvet">Velvet</option>
+            <option value="polyster">Polyster</option>
+          </select>
 
-              <input type="text" className='border-2' name="itemName" value={item.itemName} placeholder='Item Name' />
+          <input type="text" className='border-2 text-center' name="itemName1" placeholder='Item Name' required/>
 
-              <select className='bg-gray-300 py-1 font-bold' name="subCat">
-                <option value="itemType" selected disabled>SubCategory</option>
-                {
-                  sub.map(s =>
-                    <option key={s._id} value={s} >{s.subCategory}</option>
+          <div className='flex justify-between items-center'>
+            <select className='bg-gray-300 py-1 font-bold' name="subCat1" required>
+              <option value="subCat1" selected disabled>Sub-Category</option>
+              {
+                sub.map(s =>
+                  <option key={s._id} value={s.subCategory} >{s.subCategory}</option>
 
-                  )
-                }
-                {
-                  subCategory.map((sub, index) =>
-                    <option key={index + 1} value={sub} >{sub}</option>
-                  )
-                }
+                )
+              }
+              {
+                subCategory.map((sub, index) =>
+                  <option key={index + 1} value={sub} >{sub}</option>
+                )
+              }
 
-              </select>
-              <button className='text-white bg-slate-400 px-3 py-1 font-bold' onClick={() => setSubModal(true)}>ADD</button>
+            </select>
+            <button className='font-extrabold' onClick={() => setSubModal(true)} >
+              <PlusCircleIcon className="w-7 h-7 text-purple-500"></PlusCircleIcon>
+            </button>
+          </div>
 
 
-              <select className='bg-gray-300 py-1 font-bold' name="unit">
-                <option value="itemType" selected disabled>Unit Name</option>
-                {
-                  units.map(u =>
-                    <option key={u._id} value={u} >{u.unit}</option>
+          <div className='flex justify-evenly items-center'>
+            <select className='bg-gray-300 py-1 font-bold' name="unit1" required>
+              <option value="unit1" selected disabled>Unit Name</option>
+              {
+                units.map(u =>
+                  <option key={u._id} value={u.unit} >{u.unit}</option>
 
-                  )
-                }
-                {
-                  unitName.map((unit, index) =>
-                    <option key={index + 1} value={unit}>{unit}</option>
-                  )
-                }
-              </select>
-              <button className='text-white bg-slate-400 px-3 py-1 font-bold' onClick={() => setUnitModal(true)}>ADD</button>
+                )
+              }
+              {
+                unitName.map((unit, index) =>
+                  <option key={index + 1} value={unit}>{unit}</option>
+                )
+              }
+            </select>
+            <button className='font-extrabold' onClick={() => setUnitModal(true)}>
+              <PlusCircleIcon className="w-7 h-7 text-purple-500"></PlusCircleIcon>
+            </button>
+          </div>
 
-              <input type="text" className='border-2' name="itemName" value={item.stockLimit} placeholder='Stock Limit' />
+          <input type="text" className='border-2 text-center' name="stock1" placeholder='Stock Limit' required/>
 
-              <button className='text-white bg-slate-400 px-1 py-1 font-bold' onClick={() => setSubModal(true)}>ADD</button>
+          <div className='flex justify-evenly items-center'>
+            <button className='font-extrabold'>
+              <PlusCircleIcon className="w-7 h-7 text-purple-500"></PlusCircleIcon>
+            </button>
 
-              <button className='bg-red-400 px-1 py-1 text-white  font-bold' onClick={() => handleDelete(item._id)}>DELETE</button>
-            </div>
-          )
-        }
+            <button className='font-extrabold' >
+              <XCircleIcon className="w-7 h-7 text-red-500"></XCircleIcon>
+            </button>
+          </div>
+
+        </div>
+
+        <div className='grid grid-cols-6 gap-x-4 mb-4'>
+          <select className='bg-gray-300 font-bold' name="item2" required>
+            <option value="itemType" selected disabled>Item Type</option>
+            <option value="cotton">Cotton</option>
+            <option value="velvet">Velvet</option>
+            <option value="polyster">Polyster</option>
+          </select>
+
+          <input type="text" className='border-2 text-center' name="itemName2" placeholder='Item Name' required/>
+
+          <div className='flex justify-between items-center'>
+            <select className='bg-gray-300 py-1 font-bold' name="subCat2" required>
+              <option value="subCat2" selected disabled>Sub-Category</option>
+              {
+                sub.map(s =>
+                  <option key={s._id} value={s.subCategory} >{s.subCategory}</option>
+
+                )
+              }
+              {
+                subCategory.map((sub, index) =>
+                  <option key={index + 1} value={sub} >{sub}</option>
+                )
+              }
+
+            </select>
+            <button className='font-extrabold' onClick={() => setSubModal(true)}>
+              <PlusCircleIcon className="w-7 h-7 text-purple-500"></PlusCircleIcon>
+            </button>
+          </div>
+
+
+          <div className='flex justify-evenly items-center'>
+            <select className='bg-gray-300 py-1 font-bold' name="unit2" required>
+              <option value="unit2" selected disabled>Unit Name</option>
+              {
+                units.map(u =>
+                  <option key={u._id} value={u.unit} >{u.unit}</option>
+
+                )
+              }
+              {
+                unitName.map((unit, index) =>
+                  <option key={index + 1} value={unit}>{unit}</option>
+                )
+              }
+            </select>
+            <button className='font-extrabold' onClick={() => setUnitModal(true)}>
+              <PlusCircleIcon className="w-7 h-7 text-purple-500"></PlusCircleIcon>
+            </button>
+          </div>
+
+          <input type="text" className='border-2 text-center ' name="stock2" placeholder='Stock Limit' required/>
+
+          <div className='flex justify-evenly items-center'>
+            <button className='font-extrabold'>
+              <PlusCircleIcon className="w-7 h-7 text-purple-500"></PlusCircleIcon>
+            </button>
+
+            <button className='font-extrabold' >
+              <XCircleIcon className="w-7 h-7 text-red-500"></XCircleIcon>
+            </button>
+          </div>
+
+        </div>
+
+        <div className='grid grid-cols-6 gap-x-4 mb-4'>
+          <select className='bg-gray-300 font-bold' name="item3" required>
+            <option value="itemType" selected disabled>Item Type</option>
+           <option value="cotton">Cotton</option>
+            <option value="velvet">Velvet</option>
+            <option value="polyster">Polyster</option>
+          </select>
+
+          <input type="text" className='border-2 text-center' name="itemName3" placeholder='Item Name' required/>
+
+          <div className='flex justify-between items-center'>
+            <select className='bg-gray-300 py-1 font-bold' name="subCat3" required>
+              <option value="subCat3" selected disabled>Sub-Category</option>
+              {
+                sub.map(s =>
+                  <option key={s._id} value={s.subCategory} >{s.subCategory}</option>
+
+                )
+              }
+              {
+                subCategory.map((sub, index) =>
+                  <option key={index + 1} value={sub} >{sub}</option>
+                )
+              }
+
+            </select>
+            <button className='font-extrabold' onClick={() => setSubModal(true)}>
+              <PlusCircleIcon className="w-7 h-7 text-purple-500"></PlusCircleIcon>
+            </button>
+          </div>
+
+
+          <div className='flex justify-evenly items-center'>
+            <select className='bg-gray-300 py-1 font-bold' name="unit3" required>
+              <option value="unit3" selected disabled>Unit Name</option>
+              {
+                units.map(u =>
+                  <option key={u._id} value={u.unit} >{u.unit}</option>
+
+                )
+              }
+              {
+                unitName.map((unit, index) =>
+                  <option key={index + 1} value={unit}>{unit}</option>
+                )
+              }
+            </select>
+            <button className='font-extrabold' onClick={() => setUnitModal(true)}>
+              <PlusCircleIcon className="w-7 h-7 text-purple-500"></PlusCircleIcon>
+            </button>
+          </div>
+
+          <input type="text" className='border-2 text-center' name="stock3" placeholder='Stock Limit' required/>
+
+          <div className='flex justify-evenly items-center'>
+            <button className='font-extrabold'>
+              <PlusCircleIcon className="w-7 h-7 text-purple-500"></PlusCircleIcon>
+            </button>
+
+            <button className='font-extrabold' >
+              <XCircleIcon className="w-7 h-7 text-red-500"></XCircleIcon>
+            </button>
+          </div>
+
+        </div>
 
         <div className="flex justify-around items-center my-10">
 
-          <input className='bg-red-400 text-center cursor-pointer py-1 px-9' type="reset" onClick={() => handleCancel()} value="Cancel" />
+          <input className='bg-red-400 text-center cursor-pointer py-1 px-9' type="reset" value="Cancel" 
+          onClick={() => handleCancel()} />
 
           <input className='bg-green-400 text-center cursor-pointer py-1 px-12' type="submit" value="Save" />
+          
 
         </div>
+
       </form>
       {/* MODAL */}
       {
@@ -154,7 +340,6 @@ const ItemInfo = () => {
           ></UnitModal>
           : null
       }
-
     </div>
   )
 }

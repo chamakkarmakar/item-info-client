@@ -1,8 +1,33 @@
 import React from 'react';
 import useItems from '../../Hooks/useItems';
+import { PencilAltIcon, XCircleIcon } from '@heroicons/react/outline';
+import { useNavigate } from 'react-router-dom';
 
-const Items = () => {
-    const [items] = useItems();
+
+const ItemList = () => {
+    const [items,setItems] = useItems();
+  const navigate = useNavigate();
+
+
+    const handleDelete = id => {
+        const proceed = window.confirm('Are you sure to delete?');
+        if (proceed) {
+          const url = `https://aqueous-basin-84519.herokuapp.com/item/${id}`;
+          fetch(url, {
+            method: 'DELETE'
+          })
+            .then(response => response.json())
+            .then(data => {
+              console.log(data);
+              const remaining = items.filter(item => item._id !== id);
+              setItems(remaining);
+            })
+        }
+      }
+      
+      const handleEdit = id => {
+        navigate(`/item-form/${id}`)
+      }
 
     return (
 
@@ -26,11 +51,14 @@ const Items = () => {
                         <th scope="col" className="py-3 px-6">
                             Stock Limit
                         </th>
+                        <th scope="col" className="py-3 px-6">
+                            Action
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
                     {
-                        items.map(item => 
+                        items.map(item =>
                             <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                 <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {item.itemType}
@@ -47,6 +75,14 @@ const Items = () => {
                                 <td className="py-4 px-6">
                                     {item.stockLimit}
                                 </td>
+                                <td className="flex justify-between items-center py-4 px-6">
+                                    <button className='font-extrabold' onClick={() => handleDelete(item._id)}>
+                                        <XCircleIcon className="w-7 h-7 text-red-500"></XCircleIcon>
+                                    </button>
+                                    <button className='font-extrabold' onClick={() => handleEdit(item._id)}>
+                                        <PencilAltIcon className="w-7 h-7 text-blue-500"></PencilAltIcon>
+                                    </button>
+                                </td>
                             </tr>
                         )
                     }
@@ -59,4 +95,4 @@ const Items = () => {
     )
 }
 
-export default Items
+export default ItemList

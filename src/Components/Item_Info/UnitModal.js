@@ -10,7 +10,7 @@ const Unit = ({ setUnitModal, unit, setUnit, setUnitName, unitName }) => {
         const nameUnit = {
             unit: unit_name
         }
-        const url = `http://localhost:5000/unit`;
+        const url = `https://aqueous-basin-84519.herokuapp.com/unit`;
         fetch(url, {
             method: 'POST',
             headers: {

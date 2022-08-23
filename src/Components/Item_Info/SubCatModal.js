@@ -13,7 +13,7 @@ const SubCatModal = ({ setSubModal, subCat, setSubCat, setSubCategory, subCatego
     const subcategory = {
       subCategory: subCat
     }
-    const url = `http://localhost:5000/subcategory`;
+    const url = `https://aqueous-basin-84519.herokuapp.com/subcategory`;
     fetch(url, {
       method: 'POST',
       headers: {
