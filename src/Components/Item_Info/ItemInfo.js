@@ -136,7 +136,7 @@ const ItemInfo = () => {
                     }
 
                   </select>
-                  <button className='font-extrabold' onClick={() => setSubModal(true)} >
+                  <button type='button' className='font-extrabold' onClick={() => setSubModal(true)} >
                     <PlusCircleIcon className="w-7 h-7 text-purple-500"></PlusCircleIcon>
                   </button>
                 </div>
@@ -157,7 +157,7 @@ const ItemInfo = () => {
                       )
                     }
                   </select>
-                  <button className='font-extrabold' onClick={() => setUnitModal(true)}>
+                  <button type='button' className='font-extrabold' onClick={() => setUnitModal(true)}>
                     <PlusCircleIcon className="w-7 h-7 text-purple-500"></PlusCircleIcon>
                   </button>
                 </div>

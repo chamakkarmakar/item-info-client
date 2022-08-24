@@ -23,7 +23,7 @@ const SubCatModal = ({ setSubModal, subCat, setSubCat, setSubCategories, subCate
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data);
+        // console.log(data);
       })
     setSubModal(false);
     e.target.reset();
