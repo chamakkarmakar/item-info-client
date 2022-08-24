@@ -1,14 +1,14 @@
 import React from 'react'
 
 
-const SubCatModal = ({ setSubModal, subCat, setSubCat, setSubCategory, subCategory }) => {
+const SubCatModal = ({ setSubModal, subCat, setSubCat, setSubCategories, subCategories }) => {
   
 
   const handleSubCategory = e => {
     e.preventDefault();
     const sub = e.target.sub.value;
     console.log(sub);
-    setSubCategory([...subCategory, subCat]);
+    setSubCategories([...subCategories, subCat]);
 
     const subcategory = {
       subCategory: subCat
