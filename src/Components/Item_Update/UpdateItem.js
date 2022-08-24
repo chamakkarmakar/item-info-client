@@ -51,8 +51,6 @@ const UpdateItem = () => {
                 console.log(data);
             })
         console.log(items);
-
-
         event.target.reset();
     }
     return (
@@ -120,7 +118,7 @@ const UpdateItem = () => {
                     </div>
 
                     <div className='flex justify-center'>
-                        <input className='my-4 cursor-pointer bg-purple-400 w-1/2 rounded text-yellow-50 py-2 px-3' type="submit" value="ADD" />
+                        <input className='my-4 cursor-pointer bg-purple-400 w-1/2 rounded text-yellow-50 py-2 px-3' type="submit" value="UPDATE" />
                     </div>
                 </form>
 
