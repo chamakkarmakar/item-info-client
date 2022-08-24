@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SubCatModal from '../Item_Info/SubCatModal';
 import UnitModal from '../Item_Info/UnitModal';
+import toast, { Toaster } from 'react-hot-toast';
+
 
 const ItemInfo = () => {
   const navigate = useNavigate();
@@ -72,6 +74,7 @@ const ItemInfo = () => {
 
   const handleSave = event => {
     event.preventDefault();
+    toast.success('insert item sucessfully!'); 
 
     const url = `https://aqueous-basin-84519.herokuapp.com/item`;
     fetch(url, {
@@ -99,9 +102,6 @@ const ItemInfo = () => {
     <div>
       <h1 className='my-7 text-center underline font-semibold text-2xl'>Item Information</h1>
       <form onSubmit={handleSave} className='w-full'>
-        <button type='button' className='font-extrabold' onClick={handleAddRow}>
-          <PlusCircleIcon className="w-7 h-7 text-purple-500"></PlusCircleIcon>
-        </button>
         {
           rowsData.map((data, index) => {
             const { itemType, itemName, subCategory, unit, stockLimit } = data;
@@ -109,8 +109,8 @@ const ItemInfo = () => {
               <div key={index} className='grid grid-cols-6 gap-x-4 mb-4'>
 
                 {/* Item Type  */}
-                <select className='bg-gray-300 font-bold' name="itemType" value={itemType} onChange={e => handleChange(index, e)}>
-                  <option selected disabled>Item Type</option>
+                <select className='bg-gray-300 font-bold' name="itemType"  onChange={e => handleChange(index, e)}>
+                  <option value={itemType} selected disabled>Item Type</option>
                   <option value="cotton">Cotton</option>
                   <option value="velvet">Velvet</option>
                   <option value="polyster">Polyster</option>
@@ -121,7 +121,7 @@ const ItemInfo = () => {
 
                 {/* Sub Category & ADD button  */}
                 <div className='flex justify-between items-center'>
-                  <select className='bg-gray-300 py-1 font-bold' name="subCategory"  onChange={e => handleChange(index, e)}>
+                  <select className='bg-gray-300 py-1 font-bold' name="subCategory" onChange={e => handleChange(index, e)}>
                     <option value={subCategory} selected disabled>Sub-Category</option>
                     {
                       sub.map(s =>
@@ -167,14 +167,17 @@ const ItemInfo = () => {
 
                 <div className='flex justify-evenly items-center'>
                   {/* Add Row button */}
-                  <button type='button' className='font-extrabold' onClick={handleAddRow}>
-                    <PlusCircleIcon className="w-7 h-7 text-purple-500"></PlusCircleIcon>
+                  < button type='button' className='font-extrabold' onClick={handleAddRow}>
+                    <PlusCircleIcon className="w-7 h-7 text-sky-400"></PlusCircleIcon>
                   </button>
 
                   {/* Delete Row button */}
-                  <button type='button' className='font-extrabold' onClick={handleDeleteRow}>
-                    <XCircleIcon className="w-7 h-7 text-red-500"></XCircleIcon>
-                  </button>
+                  {rowsData.length > 1 && (
+                    <button type='button' className='font-extrabold' onClick={handleDeleteRow}>
+                      <XCircleIcon className="w-7 h-7 text-red-500"></XCircleIcon>
+                    </button>
+                  )}
+
                 </div>
 
               </div>
@@ -193,7 +196,7 @@ const ItemInfo = () => {
           <input className='bg-green-400 text-center cursor-pointer py-1 px-12' type="submit" value="Save" />
         </div>
 
-      </form>
+      </form >
       {/* MODAL */}
       {
         subModal ?
@@ -217,7 +220,11 @@ const ItemInfo = () => {
           ></UnitModal>
           : null
       }
-    </div>
+      <Toaster
+                position="top-right"
+                reverseOrder={false}
+            />
+    </div >
   )
 }
 

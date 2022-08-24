@@ -6,7 +6,9 @@ const useItemDetails = Id => {
         const url = `https://aqueous-basin-84519.herokuapp.com/item/${Id}`;
         fetch(url)
             .then(res => res.json())
-            .then(data => setItemDetails(data));
+            .then(data => {
+              console.log(data.itemName);
+              setItemDetails(data)});
     }, [Id])
 
   return [itemDetails,setItemDetails]

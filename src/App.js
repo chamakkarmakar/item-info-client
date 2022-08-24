@@ -4,6 +4,7 @@ import ItemInfo from './Components/Item_Info/ItemInfo';
 import ItemList from './Components/Item_Info/ItemList';
 import UpdateItem from './Components/Item_Update/UpdateItem';
 
+
 function App() {
   return (
     <div className="relative min-h-screen md:flex">
@@ -36,8 +37,8 @@ function App() {
           <Route path="/item-form/:Id" element={<UpdateItem></UpdateItem>} />
           <Route path="/item-list" element={<ItemList></ItemList>} />
         </Routes>
-      </div>
 
+      </div>
     </div>
   );
 }

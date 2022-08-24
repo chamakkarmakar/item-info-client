@@ -7,7 +7,7 @@ const useItems = () => {
         fetch('https://aqueous-basin-84519.herokuapp.com/items')
             .then(res => res.json())
             .then(data => {
-                console.log(data);
+                // console.log(data);
                 setItems(data)
             })
     }, [setItems])
