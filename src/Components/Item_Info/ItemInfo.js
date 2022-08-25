@@ -49,9 +49,11 @@ const ItemInfo = () => {
   }, [setUnits])
 
   const handleDeleteRow = (index) => {
-    const rows = [...rowsData];
-    rows.splice(index, 1);
-    setRowsData(rows);
+    // const rows = [...rowsData];
+    // rows.splice(index, 1);
+    // setRowsData(rows);
+
+    setRowsData(rowsData.filter((v,i) => i !== index));
   }
 
   const handleAddRow = () => {
@@ -74,7 +76,6 @@ const ItemInfo = () => {
 
   const handleSave = event => {
     event.preventDefault();
-    toast.success('insert item sucessfully!'); 
 
     const url = `https://aqueous-basin-84519.herokuapp.com/item`;
     fetch(url, {
@@ -87,8 +88,8 @@ const ItemInfo = () => {
       .then(res => res.json())
       .then(data => {
         console.log(data);
+        toast.success('insert item sucessfully!');
       })
-    event.target.reset();
 
   }
 
@@ -109,20 +110,20 @@ const ItemInfo = () => {
               <div key={index} className='grid grid-cols-6 gap-x-4 mb-4'>
 
                 {/* Item Type  */}
-                <select className='bg-gray-300 font-bold' name="itemType"  onChange={e => handleChange(index, e)}>
-                  <option value={itemType} selected disabled>Item Type</option>
+                <select className='bg-gray-300 font-bold' name="itemType" onChange={e => handleChange(index, e)} required>
+                  <option value={itemType} selected>Item Type</option>
                   <option value="cotton">Cotton</option>
                   <option value="velvet">Velvet</option>
                   <option value="polyster">Polyster</option>
                 </select>
 
                 {/* Item Name  */}
-                <input type="text" className='border-2 text-center' value={itemName} name="itemName" placeholder='Item Name' onChange={e => handleChange(index, e)} />
+                <input type="text" className='border-2 text-center' value={itemName} name="itemName" placeholder='Item Name' onChange={e => handleChange(index, e)} required />
 
                 {/* Sub Category & ADD button  */}
                 <div className='flex justify-between items-center'>
-                  <select className='bg-gray-300 py-1 font-bold' name="subCategory" onChange={e => handleChange(index, e)}>
-                    <option value={subCategory} selected disabled>Sub-Category</option>
+                  <select className='bg-gray-300 py-1 font-bold' name="subCategory" required onChange={e => handleChange(index, e)}>
+                    <option value={subCategory} selected>Sub-Category</option>
                     {
                       sub.map(s =>
                         <option key={s._id} value={s.subCategory} >{s.subCategory}</option>
@@ -143,8 +144,8 @@ const ItemInfo = () => {
 
                 {/* Unit & ADD button  */}
                 <div className='flex justify-evenly items-center'>
-                  <select className='bg-gray-300 py-1 font-bold' name="unit" onChange={e => handleChange(index, e)}>
-                    <option value={unit} selected disabled>Unit Name</option>
+                  <select className='bg-gray-300 py-1 font-bold' name="unit" onChange={e => handleChange(index, e)} required>
+                    <option value={unit} selected>Unit Name</option>
                     {
                       units.map(u =>
                         <option key={u._id} value={u.unit} >{u.unit}</option>
@@ -163,7 +164,7 @@ const ItemInfo = () => {
                 </div>
 
                 {/* Stock Limit  */}
-                <input type="text" className='border-2 text-center' value={stockLimit} name="stockLimit" placeholder='Stock Limit' onChange={e => handleChange(index, e)} />
+                <input type="text" className='border-2 text-center' value={stockLimit} name="stockLimit" placeholder='Stock Limit' onChange={e => handleChange(index, e)} required />
 
                 <div className='flex justify-evenly items-center'>
                   {/* Add Row button */}
@@ -173,13 +174,11 @@ const ItemInfo = () => {
 
                   {/* Delete Row button */}
                   {rowsData.length > 1 && (
-                    <button type='button' className='font-extrabold' onClick={handleDeleteRow}>
+                    <button type='button' className='font-extrabold' onClick={e=>handleDeleteRow(index,e)}>
                       <XCircleIcon className="w-7 h-7 text-red-500"></XCircleIcon>
                     </button>
                   )}
-
                 </div>
-
               </div>
             )
           }
@@ -221,9 +220,9 @@ const ItemInfo = () => {
           : null
       }
       <Toaster
-                position="top-right"
-                reverseOrder={false}
-            />
+        position="top-right"
+        reverseOrder={false}
+      />
     </div >
   )
 }
